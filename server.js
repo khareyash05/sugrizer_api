@@ -51,4 +51,9 @@ app.post("/student", async (req, res) => {
     return res.status(200).json({msg : "Answer submitted"})
 })
 
+app.get("/responses", async (req, res) => {
+    const responses = await Assignment.find()
+    res.render("responses",{responses})
+})
+
 app.listen(3000)
