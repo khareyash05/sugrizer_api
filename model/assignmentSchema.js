@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const teacherSchema = new mongoose.Schema({
+const assignmentSchema = new mongoose.Schema({
     title  :{
         type : String ,
         required : true
@@ -23,6 +23,6 @@ const teacherSchema = new mongoose.Schema({
     }
 })
 
-const Teacher = mongoose.model('E-kart',teacherSchema)
+const Assignment = mongoose.model('E-kart',assignmentSchema)
 
-module.exports = Teacher
+module.exports = Assignment

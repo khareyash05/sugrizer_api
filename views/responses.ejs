@@ -7,6 +7,10 @@
                 <p>DueDate - <%=responses.dueDate%></p>
                 <p>Answer - <%=responses.response%></p>
             </div>
+            <form method="post">
+                <input name="feedback">
+                <input name="id" value="<%=assignment._id%>"type="hidden"/>
+            </form>
         <%}%>
-    <%});%> 
+    <%});%>
 <%- include('./partials/footer'); -%>    

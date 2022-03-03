@@ -7,6 +7,8 @@ dotenv.config({path : 'config.env'})
 
 require("./db/conn")
 const Assignment = require("./model/assignmentSchema")
+const Student = require("./model/studentSchema")
+const Teacher = require("./model/teacherSchema")
 
 app.use(express.json())
 app.set('view engine', 'ejs')
@@ -17,11 +19,73 @@ app.get("/", (req, res) => {
     res.render("index")
 })
 
-app.get("/teacher", (req, res) => {
+app.get("/student", async (req,res)=>{
+    res.render("studentoptions")
+})
+
+app.get("/studentlogin", async (req,res)=>{
+    res.render("studentlogin")
+})
+
+app.post("/studentlogin", async (req,res)=>{
+    const {email,password} = req.body
+    const student = await Student.findOne({email,password})
+    if(!student){
+        return res.status(400).json({"msg" : "Invalid Credentials"})
+    }
+    res.redirect("/studenthome")
+})
+
+app.get("/studentregister", async (req,res)=>{
+    res.render("studentregister")
+})
+
+app.post("/studentregister", async (req,res)=>{
+    const {fName,lName,classe,email,password} = req.body
+    const student = await Student.findOne({email})
+    if(student){
+        res.redirect("/studenthome")
+    }else{
+        const newStudent= new Student({fName,lName,classe,email,password})
+        await newStudent.save()
+        res.redirect("/studenthome")
+    }
+})
+
+app.get("/teacherlogin", async (req,res)=>{
+    res.render("teacherlogin")
+})
+
+app.post("/teacherlogin", async (req,res)=>{
+    const {email,password} = req.body
+    const teacher = await Teacher.findOne({email,password})
+    if(!teacher){
+        return res.status(400).json({"msg" : "Invalid Credentials"})
+    }
+    res.redirect("/teacherhome")
+})
+
+app.get("/teacherregister", async (req,res)=>{
+    res.render("teacherregister")
+})
+
+app.post("/teacherregister", async (req,res)=>{
+    const {fName,lName,classe,email,password} = req.body
+    const student = await Teacher.findOne({email})
+    if(student){
+        res.redirect("/teacherhome")
+    }else{
+        const newTeacher= new Teacher({fName,lName,classe,email,password})
+        await newTeacher.save()
+        res.redirect("/teacherhome")
+    }
+})
+
+app.get("/teacherhome", (req, res) => {
     res.render("teacher")
 })
 
-app.post("/teacher", async (req, res) => {
+app.post("/teacherhome", async (req, res) => {
     const {title, description, dueDate,submit} = req.body
     console.log(title, description, dueDate,submit)
     if(!title || !description || !dueDate ){
@@ -36,12 +100,12 @@ app.post("/teacher", async (req, res) => {
     res.send("New assignment created")
 })
 
-app.get("/student",async (req,res)=>{
+app.get("/studenthome",async (req,res)=>{
     const assignments = await Assignment.find()
     res.render("student",{data:assignments})
 })
 
-app.post("/student", async (req, res) => {
+app.post("/studenthome", async (req, res) => {
     const {answer,id} = req.body
     if(!answer){
         return res.status(400).json({msg : "Please enter your answer"})
@@ -54,6 +118,9 @@ app.post("/student", async (req, res) => {
 app.get("/responses", async (req, res) => {
     const responses = await Assignment.find()
     res.render("responses",{responses})
+})
+
+app.post("/responses",async (req,res)=>{    
 })
 
 app.listen(3000)
