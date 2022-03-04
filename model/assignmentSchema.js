@@ -23,6 +23,6 @@ const assignmentSchema = new mongoose.Schema({
     }
 })
 
-const Assignment = mongoose.model('E-kart',assignmentSchema)
+const Assignment = mongoose.model('Assignment',assignmentSchema)
 
 module.exports = Assignment

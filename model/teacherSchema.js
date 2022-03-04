@@ -1,16 +1,16 @@
 const mongoose = require("mongoose")
 
 const studentSchema = new mongoose.Schema({
-    firstName  :{
+    fName :{
         type : String ,
         required : true
     },
-    lastName : {
+    lName : {
         type : String,
         required : true
     },
-    class  :{
-        type : Date ,
+    classe :{
+        type : String ,
         required : true
     },
     email :{
@@ -23,6 +23,6 @@ const studentSchema = new mongoose.Schema({
     }
 })
 
-const Student = mongoose.model('E-kart',studentSchema)
+const Student = mongoose.model('teachers',studentSchema)
 
 module.exports = Student

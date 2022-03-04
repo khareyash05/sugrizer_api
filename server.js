@@ -22,6 +22,9 @@ app.get("/", (req, res) => {
 app.get("/student", async (req,res)=>{
     res.render("studentoptions")
 })
+app.get("/teacher", async (req,res)=>{
+    res.render("teacheroptions")
+})
 
 app.get("/studentlogin", async (req,res)=>{
     res.render("studentlogin")
@@ -42,6 +45,7 @@ app.get("/studentregister", async (req,res)=>{
 
 app.post("/studentregister", async (req,res)=>{
     const {fName,lName,classe,email,password} = req.body
+    console.log(fName,lName,classe,email,password);
     const student = await Student.findOne({email})
     if(student){
         res.redirect("/studenthome")
