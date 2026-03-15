@@ -140,4 +140,15 @@ app.get("/api/echo", (req, res) => {
     res.status(200).json({ echoed_message: msg })
 })
 
+app.get("/api/assignments", async (req, res) => {
+    const assignments = await Assignment.find()
+    res.status(200).json(assignments)
+})
+
+app.delete("/api/assignments/:id", async (req, res) => {
+    const { id } = req.params
+    await Assignment.findByIdAndDelete(id)
+    res.status(200).json({ msg: "Assignment deleted" })
+})
+
 app.listen(3000)
