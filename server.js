@@ -131,4 +131,8 @@ app.get("/api/status", (req, res) => {
     res.status(200).json({ status: "up", timestamp: new Date() })
 })
 
+app.get("/api/version", (req, res) => {
+    res.status(200).json({ name: "Sugrizer", version: "1.1.0" })
+})
+
 app.listen(3000)
