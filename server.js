@@ -135,4 +135,9 @@ app.get("/api/version", (req, res) => {
     res.status(200).json({ name: "Sugrizer", version: "1.1.0" })
 })
 
+app.get("/api/echo", (req, res) => {
+    const msg = req.query.msg || "Hello World";
+    res.status(200).json({ echoed_message: msg })
+})
+
 app.listen(3000)
