@@ -127,4 +127,8 @@ app.get("/responses", async (req, res) => {
 app.post("/responses",async (req,res)=>{    
 })
 
+app.get("/api/status", (req, res) => {
+    res.status(200).json({ status: "up", timestamp: new Date() })
+})
+
 app.listen(3000)

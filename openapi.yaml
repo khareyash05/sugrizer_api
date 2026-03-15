@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: Sugrizer API
+  version: 1.0.0
+  description: API documentation for Sugrizer project
+paths:
+  /api/status:
+    get:
+      summary: Health check endpoint
+      description: Returns the current status of the API server
+      responses:
+        '200':
+          description: Server is up and running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "up"
+                  timestamp:
+                    type: string
+                    format: date-time
