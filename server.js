@@ -151,4 +151,12 @@ app.delete("/api/assignments/:id", async (req, res) => {
     res.status(200).json({ msg: "Assignment deleted" })
 })
 
+app.patch("/api/assignments/:id", async (req, res) => {
+    const { id } = req.params
+    const { title, description, dueDate } = req.body
+    const updated = await Assignment.findByIdAndUpdate(id, { title, description, dueDate }, { new: true })
+    if (!updated) return res.status(404).json({ msg: "Assignment not found" })
+    res.status(200).json(updated)
+})
+
 app.listen(3000)
