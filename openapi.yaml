@@ -1,24 +1,91 @@
 openapi: 3.0.0
 info:
-  title: Sugrizer API
+  title: Assignments API
   version: 1.0.0
-  description: API documentation for Sugrizer project
+  description: API documentation for the Assignments application.
 paths:
-  /api/status:
-    get:
-      summary: Health check endpoint
-      description: Returns the current status of the API server
+  /api/assignments/{id}:
+    delete:
+      summary: Delete an assignment
+      description: Deletes an assignment by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier of the assignment.
       responses:
         '200':
-          description: Server is up and running
+          description: Assignment deleted successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status:
+                  msg:
                     type: string
-                    example: "up"
-                  timestamp:
+                    example: Assignment deleted
+    patch:
+      summary: Update an assignment
+      description: Partially updates an existing assignment by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier of the assignment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the assignment.
+                description:
+                  type: string
+                  description: The description of the assignment.
+                dueDate:
+                  type: string
+                  format: date-time
+                  description: The due date of the assignment.
+      responses:
+        '200':
+          description: Assignment successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '404':
+          description: Assignment not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
                     type: string
-                    format: date-time
+                    example: Assignment not found
+components:
+  schemas:
+    Assignment:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the assignment.
+        title:
+          type: string
+          description: The title of the assignment.
+        description:
+          type: string
+          description: The description of the assignment.
+        dueDate:
+          type: string
+          format: date-time
+          description: The due date of the assignment.
+    
