@@ -2,40 +2,66 @@ openapi: 3.0.0
 info:
   title: Assignments API
   version: 1.0.0
-  description: API documentation for the Assignments application.
+  description: API for managing assignments.
 paths:
-  /api/assignments/{id}:
-    delete:
-      summary: Delete an assignment
-      description: Deletes an assignment by its ID.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the assignment.
+  /api/assignments:
+    get:
+      summary: Get all assignments
       responses:
         '200':
-          description: Assignment deleted successfully.
+          description: A list of assignments
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  msg:
-                    type: string
-                    example: Assignment deleted
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+    post:
+      summary: Create a new assignment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentInput'
+      responses:
+        '201':
+          description: Assignment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '400':
+          description: Bad request due to missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+  /api/assignments/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: The assignment ID
+    delete:
+      summary: Delete an assignment
+      responses:
+        '200':
+          description: Assignment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '404':
+          description: Assignment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
     patch:
       summary: Update an assignment
-      description: Partially updates an existing assignment by its ID.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the assignment.
       requestBody:
         required: true
         content:
@@ -45,31 +71,18 @@ paths:
               properties:
                 title:
                   type: string
-                  description: The title of the assignment.
                 description:
                   type: string
-                  description: The description of the assignment.
                 dueDate:
                   type: string
                   format: date-time
-                  description: The due date of the assignment.
       responses:
         '200':
-          description: Assignment successfully updated.
+          description: Assignment updated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Assignment'
-        '404':
-          description: Assignment not found.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  msg:
-                    type: string
-                    example: Assignment not found
 components:
   schemas:
     Assignment:
@@ -77,15 +90,31 @@ components:
       properties:
         _id:
           type: string
-          description: The unique identifier of the assignment.
+          description: The unique identifier for the assignment
         title:
           type: string
-          description: The title of the assignment.
         description:
           type: string
-          description: The description of the assignment.
         dueDate:
           type: string
           format: date-time
-          description: The due date of the assignment.
-    
+    AssignmentInput:
+      type: object
+      required:
+        - title
+        - description
+        - dueDate
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+    MessageResponse:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Message description here"
