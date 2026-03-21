@@ -145,9 +145,27 @@ app.get("/api/assignments", async (req, res) => {
     res.status(200).json(assignments)
 })
 
+app.post("/api/assignments", async (req, res) => {
+    const { title, description, dueDate } = req.body
+
+    if (!title || !description || !dueDate) {
+        return res.status(400).json({ msg: "title, description and dueDate are required" })
+    }
+
+    const assignment = new Assignment({
+        title,
+        description,
+        dueDate
+    })
+
+    await assignment.save()
+    res.status(201).json(assignment)
+})
+
 app.delete("/api/assignments/:id", async (req, res) => {
     const { id } = req.params
-    await Assignment.findByIdAndDelete(id)
+    const deleted = await Assignment.findByIdAndDelete(id)
+    if (!deleted) return res.status(404).json({ msg: "Assignment not found" })
     res.status(200).json({ msg: "Assignment deleted" })
 })
 
